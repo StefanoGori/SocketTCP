@@ -42,20 +42,26 @@ public class Clientstr {
     }
     
     public void comunica(){
-        try{
-            System.out.println("4 inserisci la stringa da mandare al server:"+'\n');
-            StringaUtente=tastiera.readLine();
-            System.out.println("5 invio della stringa al server");
-            OutVersoServer.writeBytes(StringaUtente+'\n');
-            StringaRicevutaDalServer=inDalServer.readLine();
-            System.out.println("8 risposta dal server"+'\n');
-            System.out.println("9 CLIENT termine elaborazione");
-            miosocket.close();
+        for(;;){
+            try{
+                System.out.println("4... utente, inserisci la stringa da trasmettere al server:");
+                StringaUtente=tastiera.readLine();
+                System.out.println("5... invio la stringa al server e attendo...");
+                OutVersoServer.writeBytes(StringaUtente+"\n");
+                StringaRicevutaDalServer=inDalServer.readLine();
+                System.out.println("7... risposta dal server"+"\n"+StringaRicevutaDalServer);
+                if(StringaUtente.equals("FINE")){
+                    System.out.println("8 client: termina elaborazione e chiude connessione");
+                    miosocket.close();
+                    break;
+                }
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+                System.out.println("Errore durante la comunicazione col server");
+                System.exit(1);
+            }
         }
-        catch(Exception e){
-            System.out.println(e.getMessage());
-            System.out.println("Errore durante la comunicazione col server");
-            System.exit(1);
-        }
+        
     }
 }
